@@ -93,9 +93,36 @@ class SAC_agent:
 class Agent():
     def __init__(self):
         self.sac_agent = SAC_agent(339, 22, 256, 'cpu')
+        # self.sac_agent = SAC_agent(97, 22, 256, 'cpu')
         self.sac_agent.load_model('109080076_hw4_data')
-    
+        self.count_frame = 0
+        self.last_action = None
     def act(self, observation):
-        obs = flatten_obs(observation)
-        return self.sac_agent.get_action(obs)
+        if self.count_frame % 4 == 0:
+            self.count_frame = 0
+            obs = flatten_obs(observation)
+            # obs = obs[0][242::]
+            # obs = obs.reshape(1,-1)
+            self.last_action = self.sac_agent.get_action(obs)
+            return self.last_action
+        else:
+            self.count_frame += 1
+            return self.last_action
+        
+# test_time = 10
+# agent = Agent()
+# env = L2M2019Env(visualize=True,difficulty=2)
+# total_reward = 0
+# for i in range(test_time):
+#     observation = env.reset()
+#     done = False
+#     episiode_reward = 0
+#     while not done:
+#         action = agent.act(observation)
+#         observation, reward, done, info = env.step(action)
+#         episiode_reward += reward
+#     total_reward += episiode_reward
+#     print('Episode:',i,'Reward:',episiode_reward)
+# env.close()
+# print('Final Score:',total_reward/test_time)
         
