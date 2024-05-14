@@ -99,7 +99,6 @@ class Agent():
         self.last_action = None
     def act(self, observation):
         if self.count_frame % 4 == 0:
-            
             self.count_frame = 0
             obs = flatten_obs(observation)
             # obs = obs[0][242::]
